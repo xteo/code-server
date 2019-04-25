@@ -9,6 +9,7 @@ matrix:
       dist: trusty
     - os: osx
 before_install:
+  - echo $TRAVIS_SECURE_ENV_VARS
   - if [[ "$GCP_CREDENTIALS" != "" ]]; then
     echo "$GCP_CREDENTIALS" > test/.coder-gcp-credentials.json; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
