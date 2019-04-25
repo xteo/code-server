@@ -3,13 +3,13 @@ node_js:
 - 10.15.1
 env:
   - VSCODE_VERSION="1.33.1" MAJOR_VERSION="1" VERSION="$MAJOR_VERSION.$TRAVIS_BUILD_NUMBER-vsc$VSCODE_VERSION"
+  - secure: K3oP22ITfJG0LY+FuiibhWQ6ufdBeu1BjeCdYHb+858cCJnZNLgk0iEjhP7diQ1Jc0fimeuWADUWUHOCNlurmtuQ+Ker0QwI1Kg0diYiqEP7L5LtaX08/7u40iwuu+SduKSiAppKSbEk/ifmXxjqh1HQQkW0RjI20xVi8jT69+BBcP4z3Ged2/qzm36w6Gp5lFRTvryY4CNXgaMnhZFmQbNVo7aMs5EhyOkl5Mrbrn3TBqWbBmG0m33fcY88zjI3eNcEhRo1DNuh9aQ5CU/Mb51d9DxFk6Hs2pAg0MrFsbkuFOQ6/+d4xLauY7uTdLKH8kb3+0hLm+OT8gpDZJWgJf4p+FK6tvFK9ZTazLmefBvSc+X7+o/HQZA1ZQfuJIyOaNLETJajv2+FpvYz1byuor5rlRmOSTuP5mTB8Rn+doQS5qwa0xh/oQCysuL4FDOMbjwqWiWOb1IjJdNF3K0icwGja/rqgHbk3ltj1TC5Xws0Zg8hEmFvoQ69qZFKJntdPr3KnqNQ+v7f5SHAu6Tt4NlZob5+4CGDepIVx//GgSJ7Dmo3V/04GRPoHu2U57AZpsKbWeLNu0k6RzkMBsB5+0azK9rtmKy0N+m/+/t3g4FrRU+SgKlNJjJRUCNVwR4lTwk0Ju8ZInU7Tuwj3M+uoRBSFFwrvnv7pvl+cQHdZpY=
 matrix:
   include:
     - os: linux
       dist: trusty
     - os: osx
 before_install:
-  - echo $TRAVIS_SECURE_ENV_VARS
   - if [[ "$GCP_CREDENTIALS" != "" ]]; then
     echo "$GCP_CREDENTIALS" > test/.coder-gcp-credentials.json; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
