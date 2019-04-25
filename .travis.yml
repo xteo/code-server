@@ -9,6 +9,8 @@ matrix:
       dist: trusty
     - os: osx
 before_install:
+  - if [[ "$GCP_CREDENTIALS" != "" ]]; then
+    echo "$GCP_CREDENTIALS" > test/.coder-gcp-credentials.json; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     sudo apt-get install -y libxkbfile-dev libsecret-1-dev; fi
   - npm install -g yarn@1.12.3
