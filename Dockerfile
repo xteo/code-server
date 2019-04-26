@@ -49,6 +49,6 @@ WORKDIR /home/coder/project
 VOLUME [ "/home/coder/project" ]
 
 COPY --from=0 /src/packages/server/cli-linux-x64 /usr/local/bin/code-server
-EXPOSE 8443
+EXPOSE $PORT
 
 ENTRYPOINT ["dumb-init", "code-server"]
