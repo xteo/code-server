@@ -2,27 +2,29 @@ language: node_js
 node_js:
 - 10.15.1
 env:
+  matrix:
   - VSCODE_VERSION="1.33.1" MAJOR_VERSION="1" VERSION="$MAJOR_VERSION.$TRAVIS_BUILD_NUMBER-vsc$VSCODE_VERSION"
-  - secure: K3oP22ITfJG0LY+FuiibhWQ6ufdBeu1BjeCdYHb+858cCJnZNLgk0iEjhP7diQ1Jc0fimeuWADUWUHOCNlurmtuQ+Ker0QwI1Kg0diYiqEP7L5LtaX08/7u40iwuu+SduKSiAppKSbEk/ifmXxjqh1HQQkW0RjI20xVi8jT69+BBcP4z3Ged2/qzm36w6Gp5lFRTvryY4CNXgaMnhZFmQbNVo7aMs5EhyOkl5Mrbrn3TBqWbBmG0m33fcY88zjI3eNcEhRo1DNuh9aQ5CU/Mb51d9DxFk6Hs2pAg0MrFsbkuFOQ6/+d4xLauY7uTdLKH8kb3+0hLm+OT8gpDZJWgJf4p+FK6tvFK9ZTazLmefBvSc+X7+o/HQZA1ZQfuJIyOaNLETJajv2+FpvYz1byuor5rlRmOSTuP5mTB8Rn+doQS5qwa0xh/oQCysuL4FDOMbjwqWiWOb1IjJdNF3K0icwGja/rqgHbk3ltj1TC5Xws0Zg8hEmFvoQ69qZFKJntdPr3KnqNQ+v7f5SHAu6Tt4NlZob5+4CGDepIVx//GgSJ7Dmo3V/04GRPoHu2U57AZpsKbWeLNu0k6RzkMBsB5+0azK9rtmKy0N+m/+/t3g4FrRU+SgKlNJjJRUCNVwR4lTwk0Ju8ZInU7Tuwj3M+uoRBSFFwrvnv7pvl+cQHdZpY=
+  global:
+    secure: UjLup5jmlCq7f6J8JcTv6A3u0XwVmnM8iA1sMBN9Y88ACR0dvDt5lFnix15v2TNSNHy81DnQoKw4jypDAevw1XSqKJ6Afjk6GNITOg2nP4tqiZx86d2+PU1/68i70b4HHKJG4XurhYvuy9XWo+PSAK9cAKuvqHiupi2B/RRNaUSGHaPMNYP9LrpYkwLtOXGb+D5nwSPAXV7t6ils/AG4AfdOSDze9Ozp7hF3YfInDPiGuf0h1vxY+Jk08wNBE/EQTNSPku+0Ar3cEZ/qf8RayQDBSOjNjijlX8lufsys2wJE79JPjo91n5Re4FkTtIFaapMNS1HeujeHOzbnTEBMoJGJJNf674wCcVSYIVLQGtULFDcnNZ5WVJSm/u9nV8DeAPnCjJJy1P69u7D2qkaEU8I1JFI8TBaFvvVTPE7Ff7ik3zKc84LEhuww2PjYBvUl/7tS4b9+/vqKwaqm8OaN+fCkXyxxOQ79x3/JbKpYJHqdBRzkaS/4FZEPuexucsRbFlkRY8ETFYHIRNcsjNLpgNs9VV+/WQLKDrusLvT4G91RrhrXe3ELZRSPPUrfnppuUAYXCTVfCWVFFBvoYrau1IwHtDVfn7de7My3MsHj5oWts1NKrd3v4pWU5Wr9WAeu2/uxt1/Sof2vlF1Qa+vAe1hyy5WByIcZ7Eld5Vn7Muo=
 matrix:
   include:
-    - os: linux
-      dist: trusty
-    - os: osx
+  - os: linux
+    dist: trusty
+  - os: osx
 before_install:
-  - if [[ "$GCP_CREDENTIALS" != "" ]]; then
-    echo "$GCP_CREDENTIALS" > test/.coder-gcp-credentials.json; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    sudo apt-get install -y libxkbfile-dev libsecret-1-dev; fi
-  - npm install -g yarn@1.12.3
+- if [[ "$GCP_CREDENTIALS" != "" ]]; then
+  echo "$GCP_CREDENTIALS" > test/.coder-gcp-credentials.json; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+  sudo apt-get install -y libxkbfile-dev libsecret-1-dev; fi
+- npm install -g yarn@1.12.3
 script:
-  - scripts/build.sh
+- scripts/build.sh
 before_deploy:
-  - echo "$VERSION" "$TRAVIS_COMMIT"
-  - git config --local user.name "$USER_NAME"
-  - git config --local user.email "$USER_EMAIL"
-  - git tag "$VERSION" "$TRAVIS_COMMIT"
-  - yarn task package "$VERSION"
+- echo "$VERSION" "$TRAVIS_COMMIT"
+- git config --local user.name "$USER_NAME"
+- git config --local user.email "$USER_EMAIL"
+- git tag "$VERSION" "$TRAVIS_COMMIT"
+- yarn task package "$VERSION"
 deploy:
   provider: releases
   file_glob: true
@@ -34,8 +36,8 @@ deploy:
   api_key:
     secure: YL/x24KjYjgYXPcJWk3FV7FGxI79Mh6gBECQEcdlf3fkLEoKFVgzHBoUNWrFPzyR4tgLyWNAgcpD9Lkme1TRWTom7UPjXcwMNyLcLa+uec7ciSAnYD9ntLTpiCuPDD1u0LtRGclSi/EHQ+F8YVq+HZJpXTsJeAmOmihma3GVbGKSZr+BRum+0YZSG4w+o4TOlYzw/4bLWS52MogZcwpjd+hemBbgXLuGU2ziKv2vEKCZFbEeA16II4x1WLI4mutDdCeh7+3aLzGLwDa49NxtsVYNjyNFF75JhCTCNA55e2YMiLz9Uq69IXe/mi5F7xUaFfhIqqLNyKBnKeEOzu3dYnc+8n3LjnQ+00PmkF05nx9kBn3UfV1kwQGh6QbyDmTtBP07rtUMyI14aeQqHjxsaVRdMnwj9Q2DjXRr8UDqESZF0rmK3pHCXS2fBhIzLE8tLVW5Heiba2pQRFMHMZW+KBE97FzcFh7is90Ait3T8enfcd/PWFPYoBejDAdjwxwOkezh5N5ZkYquEfDYuWrFi6zRFCktsruaAcA+xGtTf9oilBBzUqu8Ie+YFWH5me83xakcblJWdaW/D2rLJAJH3m6LFm8lBqyUgDX5t/etob6CpDuYHu5D1J3XINOj/+aLAcadq6qlh70PMZS3zYffUu3JlzaD2amlSHIT8b5YXFc=
   file:
-    - release/*.tar.gz
-    - release/*.zip
+  - release/*.tar.gz
+  - release/*.zip
   on:
     repo: codercom/code-server
     branch: master
@@ -43,4 +45,4 @@ cache:
   yarn: true
   timeout: 1000
   directories:
-    - .cache
+  - ".cache"
